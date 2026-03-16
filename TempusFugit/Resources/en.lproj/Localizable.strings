@@ -1,0 +1,39 @@
+"app_name" = "Tempus fugit";
+"off" = "Off";
+"on_no_hours" = "On — no hours selected";
+"next_chime_format" = "Next chime at %d:00";
+"no_hours_selected" = "No hours selected";
+
+"schedule" = "Schedule";
+"Work" = "Work";
+"Waking" = "Waking";
+"All day" = "All day";
+"Clear" = "Clear";
+"9 – 5" = "9 am – 5 pm";
+"7 – 9 pm" = "7 am – 9 pm";
+"0 – 23" = "all day";
+"none" = "none";
+"hours_active_format" = "%d of 24 hours active";
+
+"sound" = "Sound";
+"beeper" = "Beeper";
+"callbell" = "Call bell";
+"chimes" = "Chimes";
+"cuckoo" = "Cuckoo";
+"oldclock" = "Old clock";
+"shipsbell" = "Ship's bell";
+"import_sound" = "Import sound file…";
+"supported_formats" = "Supported: .wav  .caf  .aiff  ·  max 30 sec";
+
+"for_sound_only" = "Important";
+"tip_instructions" = "To hear chimes without any visual notifications, open Settings → Notifications → Tempus fugit and turn off:";
+"lock_screen_off" = "Lock Screen  →  Off";
+"notification_centre_off" = "Notification Centre  →  Off";
+"banners_off" = "Banners  →  Off";
+"open_settings" = "Open Notification Settings →";
+
+"notification_title" = "Tempus fugit";
+"notification_body_format" = "It's %d:00";
+
+"import_failed_title" = "Import Failed";
+"ok" = "OK";

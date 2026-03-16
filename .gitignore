@@ -1,0 +1,32 @@
+# Xcode user-specific settings
+xcuserdata/
+*.xcuserstate
+*.xcbkptlist
+*.xcscmblueprint
+
+# Build generated files
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Dependencies
+## CocoaPods
+# Pods/ # <-- Usually commented out. You must decide whether to commit this folder.
+## Carthage
+Carthage/Build/
+## Swift Package Manager
+.build/
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Automation (fastlane)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# macOS system files
+.DS_Store

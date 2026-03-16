@@ -1,0 +1,39 @@
+"app_name" = "Tempus fugit";
+"off" = "Выкл";
+"on_no_hours" = "Вкл — часы не выбраны";
+"next_chime_format" = "Следующий сигнал в %d:00";
+"no_hours_selected" = "Часы не выбраны";
+
+"schedule" = "Расписание";
+"Work" = "Раб.часы";
+"Waking" = "Свет.день";
+"All day" = "Весь день";
+"Clear" = "Сброс";
+"9 – 5" = "09:00 – 17:00";
+"7 – 9 pm" = "07:00 – 21:00";
+"0 – 23" = "00:00 – 23:00";
+"none" = "🙅";
+"hours_active_format" = "%d из 24 часов активны";
+
+"sound" = "Звук";
+"beeper" = "Сигнал";
+"callbell" = "Звонок";
+"chimes" = "Куранты";
+"cuckoo" = "Кукушка";
+"oldclock" = "Часы";
+"shipsbell" = "Рында";
+"import_sound" = "Загрузить звук…";
+"supported_formats" = "Поддерживается: .wav .caf .aiff · макс. 30 сек";
+
+"for_sound_only" = "Важно";
+"tip_instructions" = "Чтобы слышать сигналы без визуальных уведомлений откройте Настройки → Уведомления → Tempus fugit и отключите:";
+"lock_screen_off" = "Заблокированный экран → Выкл";
+"notification_centre_off" = "Центр уведомлений → Выкл";
+"banners_off" = "Баннеры → Выкл";
+"open_settings" = "Открыть Центр уведомлений →";
+
+"notification_title" = "Tempus fugit";
+"notification_body_format" = "Сейчас %d:00";
+
+"import_failed_title" = "Ошибка импорта";
+"ok" = "ОК";
