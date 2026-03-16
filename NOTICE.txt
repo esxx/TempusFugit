@@ -1,0 +1,6 @@
+Tempus fugit
+Copyright 2026 Eldar Shaidullin
+
+This software includes the following components with separate copyright notices:
+
+- Sound files: Copyright 2026 Eldar Shaidullin

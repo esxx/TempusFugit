@@ -1,3 +1,18 @@
+/*
+ * Copyright 2026 Eldar Shaidullin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import SwiftUI
 import Observation
 import UserNotifications
@@ -18,7 +33,6 @@ struct CustomSound: Identifiable, Codable, Equatable {
 final class SoundStore {
 
     static let shared = SoundStore()
-    // 🔁 Updated built‑in sounds
     static let builtIn = ["beeper", "callbell", "chimes", "cuckoo", "oldclock", "shipsbell"]
 
     var custom: [CustomSound] = []
@@ -176,7 +190,7 @@ struct ContentView: View {
 
     // Persisted
     @AppStorage("chimeEnabled") private var chimeEnabled = false
-    @AppStorage("selectedSound") private var selectedSound = "beeper"  // default to first new sound
+    @AppStorage("selectedSound") private var selectedSound = "beeper"
     @AppStorage("selectedHoursData") private var selectedHoursData = Data()
 
     @State private var store = SoundStore.shared
@@ -571,7 +585,7 @@ struct ContentView: View {
 
     func deleteCustom(id: String) {
         guard let sound = store.custom.first(where: { $0.id == id }) else { return }
-        if selectedSound == id { selectedSound = "beeper" } // fallback to first new sound
+        if selectedSound == id { selectedSound = "beeper" }
         store.delete(sound)
         rescheduleIfActive()
     }

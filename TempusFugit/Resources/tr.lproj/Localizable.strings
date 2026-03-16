@@ -1,0 +1,39 @@
+"app_name" = "Tempus fugit";
+"off" = "Kapalı";
+"on_no_hours" = "Açık — saat seçilmedi";
+"next_chime_format" = "Bir sonraki sinyal %d:00";
+"no_hours_selected" = "Saat seçilmedi";
+
+"schedule" = "Takvim";
+"Work" = "İş saatı";
+"Waking" = "Uyanık";
+"All day" = "Tüm gün";
+"Clear" = "Temizle";
+"9 – 5" = "09:00 – 17:00";
+"7 – 9 pm" = "07:00 – 21:00";
+"0 – 23" = "00:00 – 23:00";
+"none" = "-";
+"hours_active_format" = "%d / 24 saat aktif";
+
+"sound" = "Ses";
+"beeper" = "Sinyal";
+"callbell" = "Zil";
+"chimes" = "Çan";
+"cuckoo" = "Guguk kuşu";
+"oldclock" = "Saat";
+"shipsbell" = "Gemi zili";
+"import_sound" = "Başka bir ses ekle…";
+"supported_formats" = "Desteklenen: .wav .caf .aiff · maks. 30 sn";
+
+"for_sound_only" = "Dikkat";
+"tip_instructions" = "Görsel bildirimler olmadan ancak sesi duymak için Ayarlar → Bildirimler → Tempus fugit'i açın ve aşağıdakileri kapatın:";
+"lock_screen_off" = "Kilitli Ekran → Kapalı";
+"notification_centre_off" = "Bildirim Merkezi → Kapalı";
+"banners_off" = "Başlıklar → Kapalı";
+"open_settings" = "Bildirim ayarlarına git →";
+
+"notification_title" = "Tempus fugit";
+"notification_body_format" = "Saat %d:00";
+
+"import_failed_title" = "Ekleme başarısız";
+"ok" = "Ok'dır";
