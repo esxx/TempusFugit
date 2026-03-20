@@ -187,6 +187,11 @@ struct ContentView: View {
     @State private var showFilePicker = false
     @State private var importError: String?
 
+    // For foreground timer
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var refreshFlag = false
+    @State private var timer: Timer?          // <-- now a @State property
+
     // Derived
     var selectedHours: Set<Int> {
         (try? JSONDecoder().decode(Set<Int>.self, from: selectedHoursData)) ?? Set(9...17)
@@ -214,6 +219,19 @@ struct ContentView: View {
         ("Clear",  "none",       Set())
     ]
 
+    // MARK: Timer Management
+    private func startTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+            refreshFlag.toggle()
+        }
+    }
+
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+
     // MARK: Body
 
     var body: some View {
@@ -240,8 +258,20 @@ struct ContentView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            // Force view to re-evaluate when app returns to foreground
-            // (The publisher triggers a redraw; no extra logic needed.)
+            refreshFlag.toggle()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                startTimer()
+            } else {
+                stopTimer()
+            }
+        }
+        .onAppear {
+            startTimer()
+        }
+        .onDisappear {
+            stopTimer()
         }
         .fileImporter(
             isPresented: $showFilePicker,
