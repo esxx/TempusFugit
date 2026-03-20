@@ -1,8 +1,8 @@
-Tempus fugit ⏰
+Tempus fugit⏰ - *Latin for "time flies"*
 ==============
 
 [License: Apache 2.0]
-[Platform: iOS]
+[Platform: iOS 17+]
 [Swift: 5.9]
 
 A minimal, elegant hourly chime app for iOS. Choose your hours, pick a sound, and let the time gently mark its passage.
@@ -21,7 +21,7 @@ Features ✨
 Screenshots 📱
 -------------
 
-![Home screen](Screenshots/home-screen.png)
+![App main screen](Screenshots/main-screen.png)
 
 ---
 
@@ -69,6 +69,22 @@ If you'd like to contribute a translation for another language, please open a pu
 
 ---
 
+Permissions 🔒
+----------------
+Tempus fugit requires only **notification permission** to play hourly chimes.  
+It does **not** request access to:
+- Camera
+- Microphone
+- Photos
+- Location
+- Contacts
+- Health data
+- Bluetooth
+
+All your preferences (selected hours, chosen sound) are stored **locally on your device** and never leave it.
+
+---
+
 Built With 🛠
 ------------
 - SwiftUI – Modern declarative UI framework.
@@ -106,4 +122,7 @@ Acknowledgements 🙏
 
 ---
 
-Made with ❤️ for those who appreciate the passage of time.
+Time flies - use it wisely!
+--------------------------
+
+---
