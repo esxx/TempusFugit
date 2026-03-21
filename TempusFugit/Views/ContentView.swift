@@ -125,14 +125,8 @@ enum NotificationManager {
             }
     }
 
-    private static let allLegacyIDs: [String] =
-        (0..<24).map { "chime_\($0)" } +
-        (0..<24).map { "hourly_\($0)" } +
-        (0..<24).map { "chime_hour_\($0)" }
-
     static func schedule(hours: Set<Int>, soundID: String, store: SoundStore) {
         let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: allLegacyIDs)
         center.removeAllPendingNotificationRequests()
         guard !hours.isEmpty else { return }
 
@@ -164,9 +158,7 @@ enum NotificationManager {
     }
 
     static func cancelAll() {
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: allLegacyIDs)
-        center.removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
 }
 
@@ -190,14 +182,14 @@ struct ContentView: View {
     // For foreground timer
     @Environment(\.scenePhase) private var scenePhase
     @State private var refreshFlag = false
-    @State private var timer: Timer?          // <-- now a @State property
+    @State private var timer: Timer?
 
     // Derived
     var selectedHours: Set<Int> {
         (try? JSONDecoder().decode(Set<Int>.self, from: selectedHoursData)) ?? Set(9...17)
     }
 
-    func setHours(_ hours: Set<Int>) {
+    private func setHours(_ hours: Set<Int>) {
         selectedHoursData = (try? JSONEncoder().encode(hours)) ?? Data()
         rescheduleIfActive()
     }
@@ -219,12 +211,14 @@ struct ContentView: View {
         ("Clear",  "none",       Set())
     ]
 
-    // MARK: Timer Management
+    // MARK: - Timer Management
     private func startTimer() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+        let newTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
             refreshFlag.toggle()
         }
+        RunLoop.current.add(newTimer, forMode: .common)
+        timer = newTimer
     }
 
     private func stopTimer() {
@@ -232,7 +226,7 @@ struct ContentView: View {
         timer = nil
     }
 
-    // MARK: Body
+    // MARK: - Body
 
     var body: some View {
         GeometryReader { geometry in
@@ -293,7 +287,7 @@ struct ContentView: View {
 
     // MARK: - Header
 
-    var header: some View {
+    private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("app_name")
                 .font(.system(size: 32, weight: .bold, design: .rounded))
@@ -326,7 +320,7 @@ struct ContentView: View {
 
     // MARK: - Schedule
 
-    var scheduleSection: some View {
+    private var scheduleSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("schedule")
                 .font(.system(.footnote, design: .rounded, weight: .semibold))
@@ -386,7 +380,7 @@ struct ContentView: View {
 
     // MARK: - Sound
 
-    var soundSection: some View {
+    private var soundSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("sound")
                 .font(.system(.footnote, design: .rounded, weight: .semibold))
@@ -405,10 +399,12 @@ struct ContentView: View {
                     let isCustom = store.custom.contains { $0.id == item.id }
 
                     HStack(spacing: 12) {
-                        Image(systemName: isSelected ? "checkmark" : "")
+                        // Checkmark with opacity to avoid layout jump and empty image name
+                        Image(systemName: "checkmark")
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundStyle(Color.accentColor)
                             .frame(width: 16)
+                            .opacity(isSelected ? 1 : 0)
 
                         Text(LocalizedStringKey(item.name))
                             .font(.system(.subheadline, design: .rounded,
@@ -468,7 +464,7 @@ struct ContentView: View {
 
     // MARK: - Tip
 
-    var tipSection: some View {
+    private var tipSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("for_sound_only")
                 .font(.system(.footnote, design: .rounded, weight: .semibold))
@@ -513,7 +509,7 @@ struct ContentView: View {
 
     // MARK: - Actions
 
-    func toggleChime() {
+    private func toggleChime() {
         if chimeEnabled {
             chimeEnabled = false
             NotificationManager.cancelAll()
@@ -528,20 +524,20 @@ struct ContentView: View {
         }
     }
 
-    func rescheduleIfActive() {
+    private func rescheduleIfActive() {
         guard chimeEnabled else { return }
         NotificationManager.schedule(hours: selectedHours, soundID: selectedSound, store: store)
     }
 
     // MARK: - Audio preview
 
-    func playPreview(id: String) {
+    private func playPreview(id: String) {
         guard let url = store.previewURL(for: id) else { return }
 
         let oldPlayer = previewPlayer
         previewPlayer = nil
         previewingID = id
-        selectedSound = id
+        // Do NOT set selectedSound = id again – it is already set by the caller.
 
         DispatchQueue.global(qos: .userInitiated).async {
             oldPlayer?.stop()
@@ -549,30 +545,40 @@ struct ContentView: View {
             do {
                 try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
                 try AVAudioSession.sharedInstance().setActive(true)
-                let player = try AVAudioPlayer(contentsOf: url)
-                player.prepareToPlay()
-                player.play()
 
-                let duration = player.duration
-
+                // Move player creation and playback to main thread
                 DispatchQueue.main.async {
-                    if previewingID == id {
-                        previewPlayer = player
-                    } else {
-                        player.stop()
-                        return
+                    do {
+                        let player = try AVAudioPlayer(contentsOf: url)
+                        player.prepareToPlay()
+                        player.play()
+
+                        let duration = player.duration
+
+                        // Only assign if user hasn't tapped another sound in the meantime
+                        if previewingID == id {
+                            previewPlayer = player
+                        } else {
+                            player.stop()
+                            return
+                        }
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + duration + 0.2) {
+                            if previewingID == id { previewingID = nil }
+                        }
+                    } catch {
+                        previewingID = nil
                     }
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration + 0.2) {
-                    if previewingID == id { previewingID = nil }
-                }
             } catch {
-                DispatchQueue.main.async { previewingID = nil }
+                DispatchQueue.main.async {
+                    previewingID = nil
+                }
             }
         }
     }
 
-    func stopPreview() {
+    private func stopPreview() {
         let player = previewPlayer
         previewPlayer = nil
         previewingID = nil
@@ -583,7 +589,7 @@ struct ContentView: View {
 
     // MARK: - Import
 
-    func handleImport(_ result: Result<[URL], Error>) {
+    private func handleImport(_ result: Result<[URL], Error>) {
         switch result {
         case .failure(let e):
             importError = e.localizedDescription
@@ -603,7 +609,7 @@ struct ContentView: View {
         }
     }
 
-    func deleteCustom(id: String) {
+    private func deleteCustom(id: String) {
         guard let sound = store.custom.first(where: { $0.id == id }) else { return }
         if selectedSound == id { selectedSound = "beeper" }
         store.delete(sound)
