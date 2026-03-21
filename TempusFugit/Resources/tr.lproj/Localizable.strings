@@ -25,7 +25,7 @@
 "import_sound" = "Başka bir ses ekle…";
 "supported_formats" = "Desteklenen: .wav .caf .aiff · maks. 30 sn";
 
-"for_sound_only" = "Dikkat";
+"for_sound_only" = "Ipucu";
 "tip_instructions" = "Görsel bildirimler olmadan ancak sesi duymak için Ayarlar → Bildirimler → Tempus fugit'i açın ve aşağıdakileri kapatın:";
 "lock_screen_off" = "Kilitli Ekran → Kapalı";
 "notification_centre_off" = "Bildirim Merkezi → Kapalı";

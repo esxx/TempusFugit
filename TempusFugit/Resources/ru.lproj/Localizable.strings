@@ -25,7 +25,7 @@
 "import_sound" = "Загрузить звук…";
 "supported_formats" = "Поддерживается: .wav .caf .aiff · макс. 30 сек";
 
-"for_sound_only" = "Важно";
+"for_sound_only" = "Совет";
 "tip_instructions" = "Чтобы слышать сигналы без визуальных уведомлений откройте Настройки → Уведомления → Tempus fugit и отключите:";
 "lock_screen_off" = "Заблокированный экран → Выкл";
 "notification_centre_off" = "Центр уведомлений → Выкл";
