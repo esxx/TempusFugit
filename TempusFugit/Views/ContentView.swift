@@ -612,6 +612,12 @@ struct ContentView: View {
     private func deleteCustom(id: String) {
         guard let sound = store.custom.first(where: { $0.id == id }) else { return }
         if selectedSound == id { selectedSound = "beeper" }
+        
+        // Stop the preview player if the sound being deleted is currently playing
+        if previewingID == id {
+            stopPreview()
+        }
+        
         store.delete(sound)
         rescheduleIfActive()
     }
